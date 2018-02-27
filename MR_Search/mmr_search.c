@@ -61,8 +61,8 @@ void initialize_heap() {
 void upHeap(int new_pos) {
 	struct HeapElement *item = heap_array[new_pos];
 	int parent = (new_pos - 1) / 2;
-    // Loop while the item has not become the main root, 
-    // and while its value is less than its parent
+	// Loop while the item has not become the main root,
+	// and while its value is less than its parent
 	while (new_pos != 0 && item->value > heap_array[parent]->value) {
 		heap_array[new_pos] = heap_array[parent];
 		new_pos = parent;
@@ -82,7 +82,7 @@ void downHeap(int root) {
                 child++;
             }  // Pick smaller
 		}
-		if (heap_array[child]->value > item->value) { 
+		if (heap_array[child]->value > item->value) {
 			heap_array[root] = heap_array[child];
 			root = child;
 			child = 2 * root + 1;
@@ -101,7 +101,7 @@ struct HeapElement* remove_max() {
 	}
 	n_elements--;
 	struct HeapElement *temp = heap_array[0];
-	if (n_elements != 0) { 
+	if (n_elements != 0) {
 		heap_array[0] = heap_array[n_elements];
 		downHeap(0);
 	}  // If we didn't delete the root
@@ -133,7 +133,7 @@ int find_augmenting_source(int sink, int *pred, int *queue, int *visited) {
 	firstqueue = 0;
 	lastqueue = 0;
 	memset(visited, 0, n_sources * sizeof(int));           // Block 0
-    memset(pred, -1, (n_sources + n_sinks) * sizeof(int));  // Block -1
+	memset(pred, -1, (n_sources + n_sinks) * sizeof(int));  // Block -1
 
 	// Scan all the sources connected to sink to look for supply
 	arc = Sinks[sink].fin;
@@ -149,31 +149,31 @@ int find_augmenting_source(int sink, int *pred, int *queue, int *visited) {
 		}
 		arc = Arcs[arc].nextin;
 	}
-    
+
 	while (firstqueue < lastqueue) {
 		source = queue[firstqueue++];
 		arc = Sources[source].fout;  // These should be outgoing arcs. Need to check ones with flow
 		while (arc >= 0) {
 			if (Arcs[arc].flow > 0) {  // Has outgoing flow so can be part of augmentation
 				sink1 = Arcs[arc].sink;
-                if (pred[sink1 + n_sources] < 0) {
-                    pred[sink1 + n_sources] = arc;
-                    arc1 = Sinks[sink1].fin;
-                    while (arc1 >= 0) {
-                        source = Arcs[arc1].source;
-                        if (visited[source] < 1) {
-                            pred[source] = arc1;  // Positive to show it is outgoing
-                            if (Sources[source].supply > 0) {
-                                return source;
-                            }
-                            else {
-                                visited[source] = 1;
-                                queue[lastqueue++] = source; // Adding sources; sink indices will be shifted by n_sources
-                            }
-                        }
-                        arc1 = Arcs[arc1].nextin;
-                    }  // Loop over incoming arcs
-                }
+		        if (pred[sink1 + n_sources] < 0) {
+					pred[sink1 + n_sources] = arc;
+					arc1 = Sinks[sink1].fin;
+					while (arc1 >= 0) {
+						source = Arcs[arc1].source;
+						if (visited[source] < 1) {
+							pred[source] = arc1;  // Positive to show it is outgoing
+							if (Sources[source].supply > 0) {
+								return source;
+							}
+							else {
+								visited[source] = 1;
+								queue[lastqueue++] = source; // Adding sources; sink indices will be shifted by n_sources
+							}
+						}
+						arc1 = Arcs[arc1].nextin;
+					}  // Loop over incoming arcs
+				}
 			}
 			arc = Arcs[arc].nextout;
 		}  // While arc
@@ -195,7 +195,7 @@ void generate_CS2()
     float psurv;
     int totsupply = 0;
     int arcs_per_sink = 6;
-    
+
     lastnode = n_sinks + n_sources +1;
     fp1 = fopen("input.dimacs", "w");
     if (fp1 == NULL){
@@ -209,7 +209,7 @@ void generate_CS2()
         fprintf(fp1, "n  %d   %d \n", i + 1, Sources[i].supply);
         totsupply += Sources[i].supply;
     }
-    
+
     // Dummy sink
     fprintf(fp1, "n  %d  %d \n", lastnode, -totsupply);
 
@@ -220,7 +220,7 @@ void generate_CS2()
                 0, Sources[Arcs[i].source].supply, 0);
     }
     int totarcs = n_arcs;
-    
+
     // Now add the arcs to the dummy node: 6 per sink
     for (int i = 0; i < n_sinks; i++) {
         psurv = Sinks[i].pi;
@@ -250,15 +250,15 @@ int main() {
 	double cpu_time_used;
 
 	int total_supply;
-    
-    
+
+
     /*
      *  Initialize the graph
      */
     // Read input from prompt
     printf("Enter number of sources, number of sinks, density of graph: \n");
     scanf("%d %d %f", &n_sources, &n_sinks, &density);
-        
+
     // Create arrays dynamically (to be destroyed later)
     n1 = (int) (1.2 * density * n_sources * n_sinks);
     Arcs = (struct Arc *) calloc(n1, sizeof(struct Arc));
@@ -270,13 +270,13 @@ int main() {
     pred = calloc(n_sources + n_sinks,sizeof(int));
     queue = calloc(n_sources, sizeof(int));
     visited = calloc(n_sources, sizeof(int));
-        
+
     // Initialize sources
     for (int i = 0; i < n_sources; i++){
         Sources[i].supply = 20;
         Sources[i].fout = -1;
     }
-        
+
     // Initialize sinks
     float totprob = 0.0;
     for (int j = 0; j < n_sinks; j++) {
@@ -307,7 +307,7 @@ int main() {
             }
         }
     }
-    
+
     /*
      * Alternatively, you can read the graph from an input file
      */
@@ -318,14 +318,12 @@ int main() {
         exit(1);
     }
     fscanf(fp_input, "%d %d %d", &n_sources, &n_sinks, &n_arcs);
-        
     // Initialize sources
     for (int i = 0; i < n_sources; i++) {
         fscanf(fp_input, "%d", &n1);
         Sources[i].supply = n1;
         Sources[i].fout = -1;
     }
-
     // Initialize sinks
     float pi_total = 0;
     for (int j = 0; j < n_sinks; j++) {
@@ -335,7 +333,6 @@ int main() {
         Sinks[j].pi = temp;
         Sinks[j].pd = temp1;
     }
-        
     // Initialize arcs
     for (int i = 0; i < n_arcs; i++) {
         fscanf(fp_input, "%d %d", &n1, &n2);
@@ -347,10 +344,9 @@ int main() {
         Arcs[i].nextout = Sources[n1].fout;
         Sources[n1].fout = i;
     }
-
     fclose(fp_input);
     #endif
-    
+
     // Generate input file for the cs2 program
     generate_CS2();
 
@@ -366,7 +362,7 @@ int main() {
 	for (int i = 0; i < n_sources; i++) {
         total_supply += Sources[i].supply;
     }
-    
+
 	while (total_supply > 0){
 		sink = heap_array[0]->sink;
 		source = find_augmenting_source(sink, pred, queue, visited);
@@ -376,7 +372,7 @@ int main() {
 			Sinks[sink].flow++;
 			Sources[source].supply--;
 			total_supply--;
-            
+
 			// Adjust augmenting path flows
 			do {
 				arc = pred[source];
@@ -387,7 +383,6 @@ int main() {
 				Arcs[arc].flow -= 1;  // Decrease flow on this arc from a sink
 				source = Arcs[arc].source;
 			} while (node != sink);
-
 		} else {
             // Found no augmentation.
             // No more flow can reach this sink.
@@ -395,7 +390,7 @@ int main() {
 			remove_max();
 		}
 	}
-    
+
 	// Timer
 	end = clock();
 	cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
@@ -422,7 +417,7 @@ int main() {
 	}
 	printf("Max flow into a sink: %d \n", n1);
     printf("Assignments (optional; see output.txt)\n");
-	
+
     /*
      * Below is optional code.
      * Only use when you want to print out all the flow assignments
@@ -438,13 +433,13 @@ int main() {
 	fclose(fp_output);
     #endif
 
-    free(pred);
+	free(pred);
 	free(visited);
 	free(Arcs);
 	free(Sources);
 	free(Sinks);
 	free(garcs);
 	free(heap_array);
-    
+
 	return(1);
 }
