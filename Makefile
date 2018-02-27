@@ -1,4 +1,6 @@
-# makefile for cs2 and mmr_search
+# This makefile is adapted from the makefile for cs2.
+
+# makefile for cs2, mmr_search and lemon
 # compileler definitions
 # COMP_DUALS to compute prices
 # PRINT_ANS to print flow (and prices if COMP_DUAL defined)
