@@ -1,5 +1,7 @@
 # cdc17-c
-C code for our CDC 2017 paper.
+C code for our CDC 2017 paper:
+
+Huanyu Ding and David A. Castañón, “Multi-agent discrete search with limited visibility,” In Proc. IEEE Conference on Decision and Control (CDC), Melbourne, Australia, 2017. 
 
 ## Algorithms
 #### MR_Search
